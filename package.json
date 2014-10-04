@@ -1,0 +1,28 @@
+{
+  "name": "eqn-solver",
+  "description": "A node module to solve a set of equations.",
+  "version": "1.1.0",
+  "keywords" : ["math", "equation", "solver", "factorize"],
+  "bugs" : {
+    "url" : "https://github.com/AdityaHegde/equation-solver/issues"
+  },
+  "license" : "MIT",
+  "author": "AdityaHegde <adityahegderocks@gmail.com>",
+  "main" : "./index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "express": "*",
+    "mocha" : "*",
+    "should": "*",
+    "istanbul": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AdityaHegde/equation-solver.git"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha tests/",
+    "test-cov" : "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha -- --check-leaks tests/*.js",
+    "build": "./node_modules/grunt-cli/bin/grunt"
+  }
+}
