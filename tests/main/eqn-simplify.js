@@ -72,5 +72,20 @@ module.exports = function() {
       term.coeff.should.be.eql(4);
       term.fullStr.should.be.eql("4ab");
     });
+
+    //no need to check the terms, fullStr is enough
+    it("simplify a*(a+b)*(b-c) with sterm a", function() {
+      var term = new TermBracket({terms : []}).fromString("a*(a+b)*(b-c)");
+      term = term.simplify(new Term({vari : "a"}));
+      term.sortAndStringify();
+      term.fullStr.should.be.eql("((b+(-1)c)a^2+(b+(-1)c)ab)");
+    });
+
+    it("simplify (a+b)^2-(b-c)^2 with sterm a", function() {
+      var term = new TermBracket({terms : []}).fromString("(a+b)^2-(b-c)^2");
+      term = term.simplify(new Term({vari : "a"}));
+      term.sortAndStringify();
+      term.fullStr.should.be.eql("(a^2+2ab+b^2+(-1)(b+(-1)c)^2)");
+    });
   });
 }
