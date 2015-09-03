@@ -1,16 +1,17 @@
 var
 should = require("should"),
-test_utils = require("test_utils"),
 testCases = [
-  "utils-combinations.js",
-  "utils-factors.js",
-  "utils-heap.js",
-  "utils-subsets.js",
-  "utils-main-coeff-for-raise-to-pwr.js",
-  "utils-main-hcf.js",
-  "utils-main-distribute-pwr.js",
+  "utils/utils-combinations.js",
+  "utils/utils-factors.js",
+  "utils/utils-heap.js",
+  "utils/utils-subsets.js",
+  "utils/utils-main-coeff-for-raise-to-pwr.js",
+  "utils/utils-main-hcf.js",
+  "utils/utils-main-distribute-pwr.js",
 ];
 
 describe("Utils", function() {
-  test_utils.describe(testCases, __dirname+"/utils/");
+  for(var i = 0; i < testCases.length; i++) {
+    require(__dirname + "/" + testCases[i]);
+  }
 });
