@@ -9,14 +9,12 @@
   "license" : "MIT",
   "author": "AdityaHegde <adityahegderocks@gmail.com>",
   "main" : "./index.js",
-  "dependencies": {
-    "jison": "*"
-  },
   "devDependencies": {
     "express": "*",
     "mocha" : "*",
     "should": "*",
-    "istanbul": "*"
+    "istanbul": "*",
+    "jison": "*"
   },
   "repository": {
     "type": "git",

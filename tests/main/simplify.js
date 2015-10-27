@@ -186,6 +186,10 @@ describe("simplify", function() {
       }],
     },
   }, {
+    eqn : "((a+b)/c)^2",
+    //sterm : "a",
+    fullStr : "(a^2*c^-1+2a*b*c^-1+b^2*c^-1)",
+  }, {
     eqn : "a*(a+b)*(b-c)",
     sterm : "a",
     fullStr : "(a*b*(b-c)+a^2*(b-c))",
