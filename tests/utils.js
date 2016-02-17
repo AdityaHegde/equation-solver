@@ -3,7 +3,7 @@ should = require("should"),
 testCases = [
   "utils/utils-combinations.js",
   "utils/utils-factors.js",
-  "utils/utils-heap.js",
+  //"utils/utils-heap.js",
   "utils/utils-subsets.js",
   "utils/utils-main-coeff-for-raise-to-pwr.js",
   "utils/utils-main-hcf.js",

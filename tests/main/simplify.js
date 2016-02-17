@@ -4,9 +4,14 @@ should = require("should");
 
 describe("simplify", function() {
   var tests = [{
+    eqn : "a-a",
+    fullStr : "1",
+  }, {
+    eqn : "a*a^-1",
+    fullStr : "1",
+  }, {
     eqn : "1+a+2*a+3",
     term : {
-      key : "TermBracket",
       type : 3,
       vari : "(4+3a)",
       coeff : 1,
@@ -32,9 +37,8 @@ describe("simplify", function() {
       fullStr : "(4+3a)",
     },
   }, {
-    eqn : "a*(b+c+2)",
+    eqn : "a*(2+b+c)",
     term : {
-      key : "TermBracket",
       type : 3,
       vari : "(2a+a*b+a*c)",
       coeff : 1,
@@ -42,7 +46,6 @@ describe("simplify", function() {
       termStr : "(2a+a*b+a*c)",
       fullStr : "(2a+a*b+a*c)",
       terms : [{
-        key : "Term",
         type : 1,
         vari : "a",
         coeff : 2,
@@ -102,9 +105,18 @@ describe("simplify", function() {
       }]
     },
   }, {
+    eqn : "a*(2+b+c)",
+    sterm : "a",
+    fullStr : "a*(2+b+c)",
+  }, {
+    eqn : "a*(2+b+c)",
+    sterm : "b",
+    fullStr : "(2a+a*b+a*c)",
+    //TODO
+    //fullStr : "a*b+a*(2+c)",
+  }, {
     eqn : "(a+b)*(a-b)",
     term : {
-      key : "TermBracket",
       type : 3,
       vari : "(a^2-b^2)",
       coeff : 1,
@@ -112,7 +124,6 @@ describe("simplify", function() {
       termStr : "(a^2-b^2)",
       fullStr : "(a^2-b^2)",
       terms : [{
-        key : "Term",
         type : 1,
         vari : "a",
         coeff : 1,
@@ -120,7 +131,6 @@ describe("simplify", function() {
         termStr : "a^2",
         fullStr : "a^2",
       }, {
-        key : "Term",
         type : 1,
         vari : "b",
         coeff : -1,
@@ -130,9 +140,30 @@ describe("simplify", function() {
       }],
     },
   }, {
+    eqn : "c*(a+b)*(a-b)",
+    fullStr : "(a^2*c-b^2*c)",
+  }, {
+    eqn : "c*(a+b)*(a-b)",
+    sterm : "a",
+    fullStr : "(a^2*c-b^2*c)",
+  }, {
+    eqn : "c*(a+b)*(a-b)",
+    sterm : "c",
+    fullStr : "c*(a+b)*(a-b)",
+  }, {
+    eqn : "c+(a+b)^2",
+    fullStr : "(a^2+b^2+c+2a*b)",
+  }, {
+    eqn : "c+(a+b)^2",
+    sterm : "a",
+    fullStr : "(a^2+b^2+c+2a*b)",
+  }, {
+    eqn : "c+(a+b)^2",
+    sterm : "c",
+    fullStr : "(c+(a+b)^2)",
+  }, {
     eqn : "(a+b)^2+(a-b)^2",
     term : {
-      key : "TermBracket",
       type : 3,
       vari : "(a^2+b^2)",
       coeff : 2,
@@ -140,7 +171,6 @@ describe("simplify", function() {
       termStr : "(a^2+b^2)",
       fullStr : "2(a^2+b^2)",
       terms : [{
-        key : "Term",
         type : 1,
         vari : "a",
         coeff : 1,
@@ -148,7 +178,6 @@ describe("simplify", function() {
         termStr : "a^2",
         fullStr : "a^2",
       }, {
-        key : "Term",
         type : 1,
         vari : "b",
         coeff : 1,
@@ -160,7 +189,6 @@ describe("simplify", function() {
   }, {
     eqn : "(a+b)^2-(a-b)^2",
     term : {
-      key : "TermMultiply",
       type : 2,
       vari : "a*b",
       coeff : 4,
@@ -168,7 +196,6 @@ describe("simplify", function() {
       termStr : "a*b",
       fullStr : "4a*b",
       terms : [{
-        key : "Term",
         type : 1,
         vari : "a",
         coeff : 1,
@@ -176,7 +203,6 @@ describe("simplify", function() {
         termStr : "a",
         fullStr : "a",
       }, {
-        key : "Term",
         type : 1,
         vari : "b",
         coeff : 1,
@@ -186,9 +212,11 @@ describe("simplify", function() {
       }],
     },
   }, {
-    eqn : "((a+b)/c)^2",
-    //sterm : "a",
-    fullStr : "(a^2*c^-1+2a*b*c^-1+b^2*c^-1)",
+    eqn : "((a+b)/b)^2",
+    fullStr : "(1+2a*b^-1+a^2*b^-2)",
+  }, {
+    eqn : "((a+b)/(c+d))^2",
+    fullStr : "(2a*b*(c^2+d^2+2c*d)^-1+a^2*(c^2+d^2+2c*d)^-1+b^2*(c^2+d^2+2c*d)^-1)",
   }, {
     eqn : "a*(a+b)*(b-c)",
     sterm : "a",
@@ -200,7 +228,7 @@ describe("simplify", function() {
   }];
 
   tests.forEach(function(test) {
-    it("simplify " + test.eqn + (test.sterm ? " with sterm " + test.sterm : ""), function() {
+    it("simplify " + test.eqn + (test.sterm ? " with sterm " + test.sterm : "") + " = " + (test.term ? test.term.fullStr : test.fullStr), function() {
       var
       term = EquationSolver.EqnParser(test.eqn);
       if(test.sterm) {
@@ -210,9 +238,8 @@ describe("simplify", function() {
       else {
         term = term.simplify();
       }
-      term.sortAndStringify();
       if(test.term) {
-        term.should.be.eql(test.term);
+        term.should.containDeep(test.term);
       }
       else if(test.fullStr) {
         term.fullStr.should.be.eql(test.fullStr);

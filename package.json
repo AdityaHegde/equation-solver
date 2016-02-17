@@ -9,6 +9,10 @@
   "license" : "MIT",
   "author": "AdityaHegde <adityahegderocks@gmail.com>",
   "main" : "./index.js",
+  "dependencies" : {
+    "class.extend" : "*",
+    "heap" : "*"
+  },
   "devDependencies": {
     "express": "*",
     "mocha" : "*",
@@ -21,6 +25,7 @@
     "url": "https://github.com/AdityaHegde/equation-solver.git"
   },
   "scripts": {
-    "test" : "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha -- --check-leaks -t 60000 tests/*.js"
+    "test" : "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha -- --check-leaks -t 60000 tests/*.js",
+    "build_parser" : "./node_modules/.bin/jison lib/eqn-parser-generator.json -o lib/eqn-parser-generated.js"
   }
 }

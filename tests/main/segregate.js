@@ -8,21 +8,31 @@ describe("segregate", function() {
     segregate : "a",
     fullStr : "(a*(1+2b))",
   }, {
-    eqn : "2*a*b+a*(b+d)",
+    eqn : "a+a^2*b+a^3*c",
     segregate : "a",
-    fullStr : "(a*(3b+d))",
+    pwr : 2,
+    fullStr : "(a+a^2*(b+a*c))",
   }, {
-    eqn : "(a+b)*(b+c)+a^2+2*a*d",
+    eqn : "2*a*b+a*(b+d)+a^2*b+a^2*c",
     segregate : "a",
-    fullStr : "(a^2+b^2+b*c+a*(b+c+2d))",
+    fullStr : "(a*(3b+d)+a^2*(b+c))",
+  }, {
+    eqn : "a+b*(a+b)+c*(a+b)",
+    segregate : "a+b",
+    fullStr : "(a+(a+b)*(b+c))",
+  }, {
+    eqn : "a+b*(a+b)+c*(a+b)^2",
+    segregate : "a+b",
+    pwr : 1,
+    fullStr : "(a+(a+b)*(b+c*(a+b)))",
   }];
 
   tests.forEach(function(test) {
-    it("eqn " + test.eqn + ", segregate " + test.segregate, function() {
+    it("eqn " + test.eqn + ", segregate " + test.segregate + (test.pwr ? " with power " + test.pwr : "") + " = " + test.fullStr, function() {
       var
       term = EquationSolver.EqnParser(test.eqn),
       segregate = EquationSolver.EqnParser(test.segregate);
-      term = term.simplify().segregate(segregate);
+      term = term.segregate(segregate, test.pwr);
       term = term[1].sortAndStringify();
       term.fullStr.should.be.eql(test.fullStr);
     });

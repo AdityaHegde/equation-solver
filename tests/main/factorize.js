@@ -36,12 +36,25 @@ describe("factorize", function() {
   }, {
     input : "a^4+5*a^3*b+6*a^2*b^2+4*b^3*a+b^4+a^6+b^2",
     output : "((a+b)^4-a^3*b+(a^3+b)^2)",
+  }, {
+    input : "a*(c+d)+b*(c+d)",
+    output : "(a+b)*(c+d)",
+  }, {
+    input : "a*(d+e)+b*(d+e)+c*(d+e)",
+    output : "(d+e)*(a+b+c)",
+  }, {
+    input : "a*(d+e)^2+b*(d+e)^3+c*(d+e)^4+f",
+    output : "(f+(d+e)^2*(a+(d+e)*(b+c*(d+e))))",
+  /*}, {
+    input : "a^2+2*a+1",
+    output : "(a+b)^2",
+  */
   }];
 
   tests.forEach(function(test) {
     it("factorize, " + test.input + "  ==>  " + test.output, function() {
       var term = EquationSolver.EqnParser(test.input);
-      term = term.simplify().sortAndStringify().factorize().sortAndStringify();
+      term = term.factorize().sortAndStringify();
       term.fullStr.should.be.eql(test.output);
     });
   });
